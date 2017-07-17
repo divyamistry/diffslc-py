@@ -91,3 +91,6 @@ ENV/
 
 # PyCharm / JetBrains
 .idea
+
+# Visual Studio Code
+.vscode
