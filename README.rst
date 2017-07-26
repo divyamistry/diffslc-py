@@ -8,4 +8,4 @@ To use DiffSLc's python implementaiton, simply import it as package:
 
 Or use the command line tool:
 
-    $ diffslcpy-cl -m <coexpression matrix file> -g <network-file>
+``$ diffslcpy-cl -c <coexpression matrix file> -g <network-file>``
