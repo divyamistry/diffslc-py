@@ -3,8 +3,8 @@ DiffSLc
 
 To use DiffSLc's python implementaiton, simply import it as package:
 
->>> import diffslcpy
->>> print diffslcpy.diffslc()
+>>> from diffslcpy import diffslc
+>>> print diffslc.DiffSLc
 
 Or use the command line tool:
 
