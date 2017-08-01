@@ -18,12 +18,36 @@ class DiffSLc:
         print("Reading Graph/network From: {}".format(network_file))
         self.nxgraph = self._load_graph_from_file(network_file)
 
-    def _load_coexpr_matrix(self, coexpr_file):
-        print("Read coexpression matrix and store it in a numpy matrix.")
+    def _load_coexpr_matrix(self, coexpr_file_name):
+        try:
+            return np.load(file=coexpr_file_name,
+                           mmap_mode="r",
+                           allow_pickle=False,
+                           fix_imports=False)
+        except IOError:
+            print("Coexpression file either doesn't exist" +
+                  " or could not be read.")
+        except ValueError:
+            print("The coexpression file contains an object array," +
+                  " but allow_pickle=False given.")
 
     def _load_graph_from_file(self, network_file):
-        print("Read a graph in any compatible format " +
-              "and store it in a network graph object.")
+        # print("Read a graph in any compatible format " +
+        #       "and store it in a network graph object.")
+        try:
+            return nx.read_adjlist(file=network_file)
+        except OSError as oerr:
+            print("The Graph file either doesn't exist, or could not be read.")
+            print(oerr)
+        except ValueError:
+            # if there's a reading error, let's first try GraphML format before
+            # reporting an error.
+            try:
+                return.read_graphml(file=network_file)
+            except ValueError as verr:
+                print("There was a problem reading the file as an" +
+                      " adjacency list or as a GraphML file.")
+                print(verr)
 
     def _ecc(self):
         print("Calculate edge clustering coefficients for " +
