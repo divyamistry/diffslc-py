@@ -11,6 +11,9 @@ coexpression matrix.
 
 class DiffSLc:
     def __init__(self, coexpr_file, network_file):
+        self.coexpr_matrix = None
+        self.nxgraph = None
+
         print("Reading Coexpressions From: {}".format(coexpr_file))
         self.coexpr_matrix = self._load_coexpr_matrix(coexpr_file)
         # Read network in any format supported by networkx
@@ -51,7 +54,19 @@ class DiffSLc:
 
     def _ecc(self):
         print("Calculate edge clustering coefficients for " +
-              "given networkx graph")
+              "all edges in the nxgraph")
+        if (self.nxgraph is not None) and (type(self.nxgraph) == nx.Graph):
+            for e in self.nxgraph.edges():
+                self.nxgraph[e[0]][e[1]]['ecc'] = self._ecc_single(e)
+
+    def _ecc_single(self, e):
+        print("Calculate edge clustering coefficient for " +
+              " a given edge e in the nxgraph.")
+        numerator = len(list(nx.common_neighbors(self.nxgraph,
+                                                 e[0],
+                                                 e[1]))) + 1
+        denominator = min(self.nxgraph.degree(e[0]), self.nxgraph.degree(e[1]))
+        return (numerator / (denominator * 1.0))
 
     def _bdc(self):
         """
