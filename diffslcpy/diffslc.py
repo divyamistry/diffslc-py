@@ -56,14 +56,16 @@ class DiffSLc:
         print("Calculate edge clustering coefficients for " +
               "all edges in the nxgraph")
         if (self.nxgraph is not None) and (type(self.nxgraph) == nx.Graph):
-            for e in nx.edges(nxg):
-                nxg[e[0]][e[1]]['ecc'] = self._ecc_single(e)
+            for e in self.nxgraph.edges():
+                self.nxgraph[e[0]][e[1]]['ecc'] = self._ecc_single(e)
 
     def _ecc_single(self, e):
         print("Calculate edge clustering coefficient for " +
               " a given edge e in the nxgraph.")
-        numerator = len(list(nx.common_neighbors(nxg, e[0], e[1]))) + 1
-        denominator = min(nxg.degree(e[0]), nxg.degree(e[1]))
+        numerator = len(list(nx.common_neighbors(self.nxgraph,
+                                                 e[0],
+                                                 e[1]))) + 1
+        denominator = min(self.nxgraph.degree(e[0]), self.nxgraph.degree(e[1]))
         return (numerator / (denominator * 1.0))
 
     def _bdc(self):
