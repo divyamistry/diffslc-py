@@ -80,8 +80,13 @@ class DiffSLc:
         edge clustering coefficient and the gene coexpressions
         """
         # print("Calculate biased degree centrality for given networkx graph")
+
+        # calculate BDC per node
         bdc_values = map(self._bdc_single, self.nxgraph.nodes())
+        # prepare a list of item that looks
+        # like (node_name, node's BDC value)
         bdc_dict = dict(zip(self.nxgraph.nodes(), bdc_values))
+        # use the dictionary to assign BDC as a node property
         nx.set_node_attributes(self.nxgraph, 'bdc', bdc_dict)
 
     def _bdc_single(self, v):
