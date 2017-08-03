@@ -60,7 +60,7 @@ class DiffSLc:
                 self.nxgraph[e[0]][e[1]]['ecc'] = self._ecc_single(e)
 
     def _ecc_single(self, e):
-        print("Calculate edge clustering coefficient for " +
+        print("Calculate edge clustering coefficient for" +
               " a given edge e in the nxgraph.")
         numerator = len(list(nx.common_neighbors(self.nxgraph,
                                                  e[0],
@@ -79,17 +79,40 @@ class DiffSLc:
         Biased Degree Centrality gathers contributions from the
         edge clustering coefficient and the gene coexpressions
         """
-        print("Calculate biased degree centrality for given networkx graph")
+        # print("Calculate biased degree centrality for given networkx graph")
+        bdc_values = map(self._bdc_single, self.nxgraph.nodes())
+        bdc_dict = dict(zip(self.nxgraph.nodes(), bdc_values))
+        nx.set_node_attributes(self.nxgraph, 'bdc', bdc_dict)
+
+    def _bdc_single(self, v):
+        print("Calculate biased degree centrality for" +
+              " a given vertex v in the nxgraph")
+
+        def ecc(e):
+            return self.beta_value * self.nxgraph[e[0]][e[1]]['ecc']
+
+        def cxp(e):
+            return (1 - self.beta_value) * self.nxgraph[e[0]][e[1]]['coexpr']
+
+        def bdc(e):
+            return ecc(e) + cxp(e)
+
+        return sum(map(bdc, self.nxgraph.edges(v)))
 
     def _ec(self):
-        print("Calculate eigenvector centrality for the given networkx graph")
+        # print("Calculate eigenvector centrality for the given graph")
+        if (self.nxgraph is not None) and (type(self.nxgraph) == nx.Graph):
+            evcent = nx.eigenvector_centrality_numpy(self.nxgraph)
+            nx.set_node_attributes(self.nxgraph, 'eigcent', evcent)
 
     def centrality(self):
         print("Calculate the diffslc centrality and store it as " +
               "node property in a networkx graph object")
 
     def beta_param(self, beta_value=0.2):
-        print("Assign a value to the beta scaling parameter in the DiffSLC.")
+        # print("Assign a value to the beta scaling parameter in the DiffSLC.")
+        self.beta_value = beta_value
 
     def omega_param(self, omega_value=0.2):
-        print("Assign a value to the omega scaling parameter in the DiffSLC.")
+        # print("Assign a value to the omega scaling parameter in the DiffSLC.")
+        self.omega_value = omega_value
