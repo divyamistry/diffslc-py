@@ -83,8 +83,7 @@ class DiffSLc:
 
         # calculate BDC per node
         bdc_values = map(self._bdc_single, self.nxgraph.nodes())
-        # prepare a list of item that looks
-        # like (node_name, node's BDC value)
+        # prepare a list of item that looks like (node_name, node's BDC value)
         bdc_dict = dict(zip(self.nxgraph.nodes(), bdc_values))
         # use the dictionary to assign BDC as a node property
         nx.set_node_attributes(self.nxgraph, 'bdc', bdc_dict)
@@ -94,14 +93,18 @@ class DiffSLc:
               " a given vertex v in the nxgraph")
 
         def ecc(e):
+            # b * ECC for a given edge. these will be summed eventually
             return self.beta_value * self.nxgraph[e[0]][e[1]]['ecc']
 
         def cxp(e):
+            # (1-b) * coexpr for a given edge; also summed eventually
             return (1 - self.beta_value) * self.nxgraph[e[0]][e[1]]['coexpr']
 
         def bdc(e):
+            # BDC contribution of one of the incident edges of a node
             return ecc(e) + cxp(e)
 
+        # BDC of a node sums up contributions of all the incident edge BDCs
         return sum(map(bdc, self.nxgraph.edges(v)))
 
     def _ec(self):
@@ -115,9 +118,9 @@ class DiffSLc:
               "node property in a networkx graph object")
 
     def beta_param(self, beta_value=0.2):
-        # print("Assign a value to the beta scaling parameter in the DiffSLC.")
+        # print("Assign a value to the beta scaling param in the DiffSLC.")
         self.beta_value = beta_value
 
     def omega_param(self, omega_value=0.2):
-        # print("Assign a value to the omega scaling parameter in the DiffSLC.")
+        # print("Assign a value to the omega scaling param in the DiffSLC.")
         self.omega_value = omega_value
