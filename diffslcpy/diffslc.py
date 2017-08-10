@@ -38,7 +38,7 @@ class DiffSLc:
         # print("Read a graph in any compatible format " +
         #       "and store it in a network graph object.")
         try:
-            return nx.read_adjlist(file=network_file)
+            return nx.read_adjlist(path=network_file)
         except OSError as oerr:
             print("The Graph file either doesn't exist, or could not be read.")
             print(oerr)
@@ -46,7 +46,7 @@ class DiffSLc:
             # if there's a reading error, let's first try GraphML format before
             # reporting an error.
             try:
-                return.read_graphml(file=network_file)
+                return read_graphml(file=network_file)
             except ValueError as verr:
                 print("There was a problem reading the file as an" +
                       " adjacency list or as a GraphML file.")
@@ -122,8 +122,8 @@ class DiffSLc:
             nx.set_node_attributes(self.nxgraph, 'diffslc', diffslc_dict)
 
     def _diffslc_single(self, v):
-        (self.omega_value * self.nxgraph.node[v]['eigcent']) +
-        ((1 - self.omega_value) * self.nxgraph.node[v]['bdc'])
+        (self.omega_value * self.nxgraph.node[v]['eigcent']) 
+        + ((1 - self.omega_value) * self.nxgraph.node[v]['bdc'])
 
     def beta_param(self, beta_value=0.2):
         # print("Assign a value to the beta scaling param in the DiffSLC.")

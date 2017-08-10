@@ -8,7 +8,19 @@ To use DiffSLc's python implementaiton, simply import it as package:
 
 Or use the command line tool:
 
-``$ diffslcpy-cl -c <coexpression matrix file> -g <network-file>``
+``
+$ diffslcpy-cl --help
+Usage: diffslcpy-cl [options] arg
+
+Options:
+  -h, --help            show this help message and exit
+  -c COEXPRFILE, --coexpr_file=COEXPRFILE
+                        File containing the gene coexpression matrix.
+                        [coexpression.expr]
+  -g NETFILE, --graph_file=NETFILE
+                        File containing the PPI network in NetworkX adjacency
+                        list or GraphML format. [graph.graphml]
+``
 
 --
 Additional instructions:
